@@ -1,0 +1,136 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+<!-- Шапка -->
+<header class="header">
+    <div class="header__container">
+        <!-- Навигация и контакты из layout.html -->
+    </div>
+</header>
+
+<main class="contacts-container">
+    <!-- Блок доставки -->
+    <section class="delivery-notice plate-feature-item">
+        <h2 class="plate-feature-title">
+            <strong>Доставка номерных знаков</strong> в регионы осуществляется<br>
+            из Тюмени за 2-3 дня, стоимость уточняйте у менеджера
+        </h2>
+    </section>
+
+    <!-- Социальные кнопки -->
+    <section class="social-section plate-features-wrapper">
+        <div class="socalka plate-feature-item">
+            <h2 class="plate-section-title">Свяжитесь с нами</h2>
+            <div class="social-links">
+                <!-- WhatsApp -->
+                <div class="social-item">
+                    <a href="https://wa.me/79825193020"
+                       class="social-link plate-main-btn"
+                       target="_blank">
+                        <i class="fab fa-whatsapp"></i>
+                        WhatsApp
+                    </a>
+                </div>
+
+                <!-- Telegram -->
+                <div class="social-item">
+                    <a href="https://t.me/gan_surgut"
+                       class="social-link plate-main-btn"
+                       target="_blank">
+                        <i class="fab fa-telegram"></i>
+                        Telegram
+                    </a>
+                </div>
+
+                <!-- Instagram -->
+                <div class="social-item">
+                    <a href="https://www.instagram.com/gosavtonomer"
+                       class="social-link plate-main-btn"
+                       target="_blank">
+                        <i class="fab fa-instagram"></i>
+                        Instagram
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Список филиалов -->
+    <section class="branches-section">
+        <h1 class="plate-main-title">Наши контакты</h1>
+
+        <div class="branches-list">
+            {% for branch in branches %}
+            <div class="branch-item plate-step-card">
+                <div class="branch-header">
+                    <h3 class="branch-city plate-step-title">{{ branch.city }}</h3>
+                </div>
+
+                <div class="branch-info">
+                    <div class="branch-address plate-feature-text">
+                        <i class="fas fa-map-marker-alt"></i>
+                        {{ branch.address }}
+                    </div>
+
+                    <a href="tel:{{ branch.phone }}" class="branch-phone plate-feature-text">
+                        <i class="fas fa-phone"></i>
+                        {{ branch.phone }}
+                    </a>
+
+                    <div class="schedule">
+                        {% for day in branch.schedule %}
+                        <div class="schedule-day plate-feature-text {% if day.name == current_day %}current-day{% endif %}">
+                            <span>{{ day.name }}</span>
+                            <span>{{ day.time }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Блок предупреждения -->
+                    {% if branch.is_warning %}
+                    <div class="warning-alert plate-feature-item">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <div>
+                            {{ branch.warning_text|default:"Внимание! Пожалуйста, позвоните перед визитом" }}
+                        </div>
+
+                        {% if user.is_authenticated and user.is_superuser %}
+                        <form action="{% url 'toggle_warning' branch.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="toggle-btn">
+                                {% if branch.is_warning %}Скрыть{% else %}Показать{% endif %}
+                            </button>
+                        </form>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</main>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Инициализация карты
+    function initMap() {
+        // ... ваш код инициализации карты ...
+    }
+
+    // Выделение текущего дня
+    document.addEventListener('DOMContentLoaded', () => {
+        const days = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда',
+            'Четверг', 'Пятница', 'Суббота'];
+        const currentDay = days[new Date().getDay()];
+
+        document.querySelectorAll('.schedule-day').forEach(day => {
+            if (day.textContent.includes(currentDay)) {
+                day.classList.add('current-day');
+            }
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "app/layout.html" %}
+{% load static %}  <!-- Добавьте эту строку -->
+{% block content %}
+<h2>Полезные ресурсы</h2>
+<a href="https://example1.com" target="_blank">
+  <img src="{% static 'app/content/resource1.png' %}" alt="Ресурс 1">
+</a>
+<!-- Добавьте другие ресурсы -->
+{% endblock %}

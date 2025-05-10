@@ -1,0 +1,14 @@
+{% extends "app/layout.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2>Создать новую задачу</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+        <a href="{% url 'today_tasks' %}" class="btn btn-secondary">Отмена</a>
+    </form>
+</div>
+{% endblock %}

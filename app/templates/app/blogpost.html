@@ -1,0 +1,53 @@
+{% extends "app/layout.html" %}
+{% block content %}
+<div class="blogpost-container">
+    <h2 class="blogpost-title">{{ post_1.title }}</h2>
+
+    {% if post_1.image %}
+        <div class="image-container">
+            <img 
+                src="{{ post_1.image.url }}" 
+                alt="Картинка статьи" 
+                class="article-image">
+        </div>
+    {% endif %}
+    
+    <div class="blogpost-content">
+        {{ post_1.content|linebreaks }}
+    </div>
+    
+    <a href="{% url 'blog' %}" class="back-to-blog">
+        <i class="fas fa-arrow-left mr-2"></i>Назад к блогу
+    </a>
+
+    <div class="comment-section">
+        {% if user.is_authenticated %}
+            <div class="comment-form">
+                <h4>Оставить комментарий:</h4>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.text }}
+                    <button type="submit" class="btn btn-primary mt-3">Отправить</button>
+                </form>
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                <a href="{% url 'login' %}" class="alert-link">Авторизуйтесь</a>, чтобы оставить комментарий.
+            </div>
+        {% endif %}
+
+        <div class="comments-list">
+            <h3>Комментарии:</h3>
+            {% for comment in comments %}
+                <div class="comment-card">
+                    <h5 class="comment-author">{{ comment.user.username }}</h5>
+                    <p class="comment-text">{{ comment.text }}</p>
+                    <small class="comment-date">{{ comment.date|date:"d.m.Y H:i" }}</small>
+                </div>
+            {% empty %}
+                <p class="comment-text">Пока нет комментариев.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

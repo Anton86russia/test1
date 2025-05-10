@@ -1,0 +1,1073 @@
+/* Основные стили */
+.diary-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.diary-header {
+    font-family: 'Montserrat', sans-serif;
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+    .diary-header::after {
+        content: '';
+        display: block;
+        width: 50px;
+        height: 3px;
+        background: #3498db;
+        margin: 0.5rem auto;
+    }
+
+/* Навигация */
+.nav-scroller {
+    background: #f8f9fa;
+    border-radius: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.nav-pills .nav-link {
+    border-radius: 10px;
+    margin: 0 0.5rem;
+    color: #34495e;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+    .nav-pills .nav-link.active {
+        background: linear-gradient(135deg, #3498db, #2980b9);
+        color: white !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+    }
+
+    .nav-pills .nav-link:hover:not(.active) {
+        background: #e9ecef;
+        transform: translateY(-2px);
+    }
+
+/* Карточки задач */
+.task-list .card {
+    border: none;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    background: white;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+    .task-list .card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: #3498db;
+    }
+
+    .task-list .card.bg-light {
+        opacity: 0.8;
+        background: repeating-linear-gradient( 45deg, #f8f9fa, #f8f9fa 10px, #e9ecef 10px, #e9ecef 20px );
+    }
+
+        .task-list .card.bg-light .card-title span {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+/* Бейджи тегов */
+.badge {
+    padding: 0.5em 1em;
+    border-radius: 20px;
+    font-weight: 500;
+    margin-right: 0.5rem;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Кнопки */
+.btn-new-task {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    color: white !important;
+    border-radius: 10px;
+    padding: 0.5rem 1.5rem;
+    border: none;
+    transition: transform 0.2s;
+}
+
+    .btn-new-task:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
+    }
+
+.task-actions .btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50% !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0.5rem;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .nav-pills .nav-link {
+        padding: 0.5rem;
+    }
+
+        .nav-pills .nav-link i {
+            margin-right: 0;
+        }
+
+    .btn-new-task span {
+        display: none;
+    }
+
+    .btn-new-task i {
+        margin-right: 0 !important;
+    }
+
+    .card-title {
+        flex-direction: column;
+        align-items: flex-start !important;
+    }
+
+        .card-title small {
+            margin-top: 0.5rem;
+        }
+}
+
+
+/* Контейнер контента */
+.diary-content {
+    padding: 2rem 0;
+    min-height: 60vh;
+}
+
+/* Сетка задач */
+.task-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem;
+}
+
+/* Карточка задачи */
+.task-card {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-left: 4px solid #3498db;
+}
+
+.task-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* Приоритеты задач */
+.task-card[data-priority="high"] {
+    border-left-color: #e74c3c;
+}
+.task-card[data-priority="medium"] {
+    border-left-color: #f1c40f;
+}
+.task-card[data-priority="low"] {
+    border-left-color: #2ecc71;
+}
+
+/* Заголовок задачи */
+.task-title {
+    margin: 1rem 0;
+    color: #2c3e50;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Описание задачи */
+.task-description {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    display: block !important;
+    word-wrap: break-word; /* чтобы очень длинные слова тоже переносились */
+}
+
+.tasks-wrapper { /* если карточки в flex/grid */
+    display: flex;
+    align-items: flex-start;
+}
+
+
+/* Статус задачи */
+.task-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: 200px;
+    max-height: 200px;
+    height: auto;
+}
+.status-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #3498db;
+    animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+/* Выполненная задача */
+.task-card.completed {
+    background: #f8f9fa;
+    border-left-color: #95a5a6;
+}
+.task-card.completed .task-title {
+    text-decoration: line-through;
+    opacity: 0.7;
+}
+.complete-icon {
+    color: #2ecc71;
+}
+
+/* Теги задачи */
+.task-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+
+/* Кнопки действий */
+.task-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+.action-btn {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.toggle-btn {
+    background: #3498db22;
+    color: #3498db;
+}
+.toggle-btn:hover {
+    background: #3498db;
+    color: white;
+}
+.edit-btn {
+    background: #f1c40f22;
+    color: #f1c40f;
+}
+.edit-btn:hover {
+    background: #f1c40f;
+    color: white;
+}
+
+/* Состояние пустого списка */
+.empty-state {
+    text-align: center;
+    grid-column: 1 / -1;
+    padding: 4rem 0;
+}
+.empty-image {
+    width: 200px;
+    opacity: 0.7;
+    margin-bottom: 1rem;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .task-grid {
+        grid-template-columns: 1fr;
+    }
+    .task-card {
+        padding: 1rem;
+    }
+}
+
+/* Контейнер контента */
+.diary-content {
+    padding: 2rem 0;
+    min-height: 60vh;
+}
+
+/* Сетка задач */
+.task-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem;
+}
+
+/* Карточка задачи */
+.task-card {
+    height: auto;
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-left: 4px solid #3498db;
+}
+
+.task-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* Приоритеты задач */
+.task-card[data-priority="high"] {
+    border-left-color: #e74c3c;
+}
+.task-card[data-priority="medium"] {
+    border-left-color: #f1c40f;
+}
+.task-card[data-priority="low"] {
+    border-left-color: #2ecc71;
+}
+
+/* Заголовок задачи */
+.task-title {
+    margin: 1rem 0;
+    color: #2c3e50;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+
+/* Статус задачи */
+.task-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.status-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #3498db;
+    animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+/* Выполненная задача */
+.task-card.completed {
+    background: #f8f9fa;
+    border-left-color: #95a5a6;
+}
+.task-card.completed .task-title {
+    text-decoration: line-through;
+    opacity: 0.7;
+}
+.complete-icon {
+    color: #2ecc71;
+}
+
+/* Теги задачи */
+.task-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+/* Кнопки действий */
+.task-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+.action-btn {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.toggle-btn {
+    background: #3498db22;
+    color: #3498db;
+}
+.toggle-btn:hover {
+    background: #3498db;
+    color: white;
+}
+.edit-btn {
+    background: #f1c40f22;
+    color: #f1c40f;
+}
+.edit-btn:hover {
+    background: #f1c40f;
+    color: white;
+}
+
+/* Состояние пустого списка */
+.empty-state {
+    text-align: center;
+    grid-column: 1 / -1;
+    padding: 4rem 0;
+}
+.empty-image {
+    width: 200px;
+    opacity: 0.7;
+    margin-bottom: 1rem;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .task-grid {
+        grid-template-columns: 1fr;
+    }
+    .task-card {
+        padding: 1rem;
+    }
+}
+
+/* Контейнер контента */
+.diary-content {
+    padding: 2rem 0;
+    min-height: 60vh;
+}
+
+/* Сетка задач */
+.task-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem;
+}
+
+/* Карточка задачи */
+.task-card {
+
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-left: 4px solid #3498db;
+}
+
+    .task-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    /* Приоритеты задач */
+    .task-card[data-priority="high"] {
+        border-left-color: #e74c3c;
+    }
+
+    .task-card[data-priority="medium"] {
+        border-left-color: #f1c40f;
+    }
+
+    .task-card[data-priority="low"] {
+        border-left-color: #2ecc71;
+    }
+
+/* Заголовок задачи */
+.task-title {
+    margin: 1rem 0;
+    color: #2c3e50;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+
+}
+
+/* Описание задачи */
+.task-description {
+    color: #7f8c8d;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+}
+
+/* Статус задачи */
+.task-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.status-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #3498db;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.6;
+    }
+}
+
+/* Выполненная задача */
+.task-card.completed {
+    background: #f8f9fa;
+    border-left-color: #95a5a6;
+}
+
+    .task-card.completed .task-title {
+        text-decoration: line-through;
+        opacity: 0.7;
+    }
+
+.complete-icon {
+    color: #2ecc71;
+}
+
+
+
+
+
+
+.action-btn {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.toggle-btn {
+    background: #3498db22;
+    color: #3498db;
+}
+
+    .toggle-btn:hover {
+        background: #3498db;
+        color: white;
+    }
+
+.edit-btn {
+    background: #f1c40f22;
+    color: #f1c40f;
+}
+
+    .edit-btn:hover {
+        background: #f1c40f;
+        color: white;
+    }
+
+/* Состояние пустого списка */
+.empty-state {
+    text-align: center;
+    grid-column: 1 / -1;
+    padding: 4rem 0;
+}
+
+.empty-image {
+    width: 200px;
+    opacity: 0.7;
+    margin-bottom: 1rem;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .task-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .task-card {
+        padding: 1rem;
+    }
+}
+
+
+
+
+
+
+
+
+/* Контейнер управления */
+.task-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem 0;
+}
+
+/* Стили для кнопки статуса */
+.status-btn {
+    position: relative;
+    border: none;
+    border-radius: 25px;
+    padding: 0.6rem 1.2rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    background: #e8f4fc;
+    color: #2196F3;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+    .status-btn.is-completed {
+        background: #fff3e0;
+        color: #FF9800;
+    }
+
+    .status-btn .hover-effect {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255,255,255,0.2);
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .status-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+        .status-btn:hover .hover-effect {
+            opacity: 1;
+        }
+
+.status-icon {
+    font-size: 1.1rem;
+    transition: transform 0.2s;
+}
+
+/* Группа действий */
+.action-buttons {
+    display: flex;
+    gap: 0.6rem;
+}
+
+.action-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    position: relative;
+    text-decoration: none;
+}
+
+    .action-btn::after {
+        content: attr(data-tooltip);
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0,0,0,0.8);
+        color: white;
+        padding: 0.4rem 0.8rem;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s;
+    }
+
+    .action-btn:hover::after {
+        opacity: 1;
+    }
+
+.edit-btn {
+    background: #e8f4fc;
+    color: #2196F3;
+}
+
+.delete-btn {
+    background: #fde8e8;
+    color: #f44336;
+}
+
+.info-btn {
+    background: #e8f5e9;
+    color: #4CAF50;
+}
+
+.action-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Анимации */
+@keyframes checkBounce {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.ajax-loading .status-icon {
+    animation: checkBounce 0.6s ease;
+}
+
+.task-image img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* task_detail.css */
+.task-detail-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #eee;
+}
+
+.detail-title {
+    color: #2c3e50;
+    font-size: 2.2rem;
+    margin: 0;
+}
+
+.btn-back {
+    background: #f8f9fa;
+    color: #6c757d;
+    padding: 8px 15px;
+    border: 1px solid #dee2e6;
+    transition: all 0.3s ease;
+}
+
+    .btn-back:hover {
+        background: #e9ecef;
+        transform: translateX(-3px);
+    }
+
+.task-image-wrapper {
+    max-width: 400px;
+    margin: 1.5rem auto;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+}
+
+.task-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+    .task-image:hover {
+        transform: scale(1.03);
+    }
+
+.task-meta {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 1.5rem;
+}
+
+.meta-info {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    margin: 0.8rem 0;
+}
+
+    .meta-item i {
+        width: 25px;
+        color: #6c757d;
+    }
+
+.tag-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    margin: 2px;
+    border-radius: 15px;
+    font-size: 0.9em;
+    color: white;
+}
+
+/* Модальное окно для изображения */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-image {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 8px;
+    animation: zoom 0.3s;
+}
+
+@keyframes zoom {
+    from {
+        transform: scale(0.9)
+    }
+
+    to {
+        transform: scale(1)
+    }
+}
+
+.close {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: #fff;
+    font-size: 40px;
+    cursor: pointer;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .task-detail-container {
+        margin: 1rem;
+        padding: 15px;
+    }
+
+    .detail-title {
+        font-size: 1.8rem;
+    }
+
+    .task-image-wrapper {
+        max-width: 100%;
+    }
+}
+
+/* Стили для блока истории */
+.task-history {
+    margin-top: 2rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.history-title {
+    color: #2c3e50;
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+/* Карточка изменения */
+.history-item {
+    margin-bottom: 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    overflow: hidden; /* Обрезаем выходящий контент */
+    padding: 5px;
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px dashed #dee2e6;
+}
+
+.history-date {
+    font-size: 0.9em;
+    color: #6c757d;
+}
+
+.history-user.badge {
+    font-size: 0.8em;
+    font-weight: 500;
+    padding: 4px 8px;
+}
+
+/* Стили для списка изменений */
+.history-changes {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+    .history-changes li {
+        padding: 8px 0;
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        flex-wrap: wrap; /* Перенос элементов на новую строку */
+    }
+
+.change-field {
+    flex: 0 0 120px;
+    font-weight: 500;
+}
+
+.change-old, .change-new {
+    padding: 2px 6px;
+    border-radius: 4px;
+    max-width: 45%; /* Ограничение ширины значений */
+    word-wrap: break-word; /* Перенос длинных слов */
+}
+
+.change-old {
+    background: #fff5f5;
+    color: #dc3545;
+    text-decoration: line-through;
+    order: 1;
+}
+
+.change-new {
+    background: #e8f5e9;
+    color: #28a745;
+    order: 3;
+}
+
+.fa-arrow-right {
+    order: 2;
+    color: #6c757d;
+    font-size: 0.9em;
+    padding: 0 5px;
+}
+
+/* Адаптивность для мобилок */
+@media (max-width: 768px) {
+    .history-changes li {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .change-field {
+        flex-basis: 100%;
+        border-bottom: 1px dotted #dee2e6;
+        padding-bottom: 4px;
+    }
+
+    .change-old, .change-new {
+        max-width: 100%;
+    }
+}
+
+/* Ховер-эффекты */
+.history-item:hover {
+    transform: translateX(3px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: all 0.2s ease;
+}
+
+
+
+
+
+
+
+
+

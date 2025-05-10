@@ -1,0 +1,107 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>🗣️ Обратная связь</h2>
+  
+  {% if form %}
+    <form method="post" class="mt-3">
+      {% csrf_token %}
+      
+      <!-- Имя -->
+      <div class="mb-3">
+        {{ form.name.label_tag }}
+        {{ form.name }}
+        {% if form.name.errors %}
+          <div class="text-danger">{{ form.name.errors }}</div>
+        {% endif %}
+      </div>
+      
+      <!-- Email -->
+      <div class="mb-3">
+        {{ form.email.label_tag }}
+        {{ form.email }}
+      </div>
+      
+      <!-- Оценка -->
+      <div class="mb-3">
+        <label class="form-label">Оценка сайта:</label>
+        <div class="form-check">
+          {% for choice in form.rating %}
+            {{ choice.tag }}
+            <label class="form-check-label">{{ choice.choice_label }}</label><br>
+          {% endfor %}
+        </div>
+      </div>
+      
+      <!-- Любимый раздел -->
+      <div class="mb-3">
+        {{ form.favorite_section.label_tag }}
+        {{ form.favorite_section }}
+      </div>
+      
+      <!-- Дата посещения -->
+		<div class="mb-3">
+		  {{ form.visit_date.label_tag }}
+		  {{ form.visit_date }}
+		  {% if form.visit_date.errors %}
+			<div class="text-danger">
+			  {% for error in form.visit_date.errors %}
+				{{ error }}<br>
+			  {% endfor %}
+			</div>
+		  {% endif %}
+		</div>
+      
+      <!-- Флажок -->
+      <div class="mb-3 form-check">
+        {{ form.newsletter }}
+        {{ form.newsletter.label_tag }}
+      </div>
+      
+      <!-- Сообщение -->
+      <div class="mb-3">
+        {{ form.message.label_tag }}
+        {{ form.message }}
+      </div>
+      
+      <button type="submit" id="submit-btn" class="btn btn-primary">Отправить</button>
+    </form>
+  
+  {% else %}
+    <div class="alert alert-success mt-3">
+      <h3>✅ Спасибо, {{ data.name }}!</h3>
+      <ul class="list-unstyled mt-3">
+        <li><strong>Email:</strong> {{ data.email }}</li>
+        <li><strong>Оценка:</strong> {{ data.rating }}</li>
+        <li><strong>Любимый раздел:</strong> {{ data.favorite_section }}</li>
+        <li><strong>Подписка:</strong> {{ data.newsletter }}</li>
+        <li><strong>Дата посещения:</strong> {{ data.visit_date }}</li>
+        <li><strong>Сообщение:</strong> {{ data.message }}</li>
+      </ul>
+    </div>
+  {% endif %}
+</div>
+
+<!-- JavaScript для динамических эффектов -->
+<script>
+  $(document).ready(function() {
+    // Подсветка полей при фокусе
+    $("input, textarea, select").focus(function() {
+      $(this).css("box-shadow", "0 0 8px #80bdff");
+    }).blur(function() {
+      $(this).css("box-shadow", "none");
+    });
+
+    // Анимация кнопки
+    $("#submit-btn").hover(
+      function() {
+        $(this).css("transform", "scale(1.05)");
+      },
+      function() {
+        $(this).css("transform", "scale(1)");
+      }
+    );
+  });
+</script>
+{% endblock %}

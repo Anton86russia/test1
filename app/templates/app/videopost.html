@@ -1,0 +1,16 @@
+{% extends "app/layout.html" %}
+{% block content %}
+<h2>Видео</h2>
+<div class="row">
+    <div class="col-md-6">
+        <video width="100%" controls poster="{{ MEDIA_URL }}poster1.jpg">
+            <source src="{{ MEDIA_URL }}video1.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="col-md-6">
+        <video width="100%" controls poster="{{ MEDIA_URL }}poster2.jpg">
+            <source src="{{ MEDIA_URL }}video2.mp4" type="video/mp4">
+        </video>
+    </div>
+</div>
+{% endblock %}

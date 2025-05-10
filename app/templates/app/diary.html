@@ -1,0 +1,132 @@
+{% extends "app/layout.html" %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'app/css/diary.css' %}">
+
+<div class="diary-container">
+    <h2 class="diary-header">{% block diary_title %}{% endblock %}</h2>
+
+    <!-- Навигация -->
+    <div class="diary-nav">
+        <div class="nav-scroller">
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'today_tasks' %}active{% endif %}"
+                       href="{% url 'today_tasks' %}">
+                        <i class="fas fa-calendar-day"></i> Сегодня
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'tomorrow_tasks' %}active{% endif %}"
+                       href="{% url 'tomorrow_tasks' %}">
+                        <i class="fas fa-sun"></i> Завтра
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'future_tasks' %}active{% endif %}"
+                       href="{% url 'future_tasks' %}">
+                        <i class="fas fa-calendar-alt"></i> Будущие
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'past_tasks' %}active{% endif %}"
+                       href="{% url 'past_tasks' %}">
+                        <i class="fas fa-archive"></i> Архив
+                    </a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item ml-auto">
+                    <a href="{% url 'new_task' %}" class="btn btn-new-task">
+                        <i class="fas fa-magic"></i> Новая задача
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Контент для разных вкладок -->
+    <!-- Контент для разных вкладок -->
+    <div class="diary-content">
+        {% block diary_content %}
+        <div class="task-grid">
+            {% for task in object_list %}
+            <div class="task-card {% if task.is_completed %}completed{% endif %}" data-priority="{{ task.priority }}">
+                <div class="task-header">
+                    <div class="task-status">
+                        <div class="status-indicator"></div>
+                        <span class="task-date">{{ task.date|date:"d M" }}</span>
+                        <span class="task-author">@{{ task.user.username }}</span>
+                        {% if task.is_completed %}
+                        <i class="fas fa-check-circle complete-icon"></i>
+                        {% endif %}
+                        {% for tag in task.tags.all %}
+                        <span class="badge" style="background-color: {{ tag.color }}">{{ tag.name }}</span>
+                        {% endfor %}
+                    </div>
+
+                </div>
+
+                <h3 class="task-title">{{ task.title }}</h3>
+
+                {% if task.description %}
+                <p class="task-description">{{ task.description|truncatechars:100 }}</p>
+                {% endif %}
+
+                <div class="task-controls">
+                    <!-- Кнопка переключения статуса -->
+                    <div class="status-toggle-wrapper">
+                        <form method="post" action="{% url 'toggle_task' task.id %}" class="ajax-toggle-form">
+                            {% csrf_token %}
+                            <button type="button"
+                                    class="status-btn {% if task.is_completed %}is-completed{% endif %}"
+                                    data-task-id="{{ task.id }}"
+                                    aria-label="{% if task.is_completed %}Вернуть в работу{% else %}Отметить выполненным{% endif %}">
+                                <span class="btn-content">
+                                    <i class="status-icon fas fa-{% if task.is_completed %}undo{% else %}check-circle{% endif %}"></i>
+                                    <span class="btn-text">
+                                        {% if task.is_completed %}Вернуть{% else %}Готово{% endif %}
+                                    </span>
+                                </span>
+                                <div class="hover-effect"></div>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Группа действий -->
+                    <div class="action-buttons">
+                        <a href="{% url 'edit_task' task.id %}"
+                           class="action-btn edit-btn"
+                           data-tooltip="Редактировать">
+                            <i class="fas fa-pen"></i>
+                        </a>
+
+                        {% if user.is_superuser %}
+                        <a href="{% url 'delete_task' task.id %}"
+                           class="action-btn delete-btn"
+                           data-tooltip="Удалить">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                        {% endif %}
+                        <a href="{% url 'task_detail' task.id %}"
+                           class="action-btn info-btn"
+                           data-tooltip="Подробнее">
+                            <i class="fas fa-info-circle"></i>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="empty-state">
+                <img src="{% static 'app/images/no-tasks.svg' %}" alt="No tasks" class="empty-image">
+                <h3>Задач не найдено</h3>
+                <p>Нажмите "+ Новая задача" чтобы создать первую</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% endblock %}
+    </div>
+</div>
+{% endblock %}

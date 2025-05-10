@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - Моя практическая работа</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/site.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/custom.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/blog.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/registration.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/about.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/diary.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'app/content/diary_dark.css' %}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="{% static 'app/scripts/modernizr-2.6.2.js' %}"></script>
+</head>
+
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mainNav">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="/" class="navbar-brand">
+                    <img src="{% static 'app/content/logo.png' %}" alt="Логотип" class="logo">
+                </a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="nav navbar-nav">
+                    {% if request.resolver_match.url_name != 'home' %}
+                    <li><a href="{% url 'home' %}"><i class="fas fa-home"></i> Домой</a></li>
+                    {% endif %}
+                    <li><a href="{% url 'blog' %}"><i class="fas fa-blog"></i> Блог</a></li>
+                    <li><a href="{% url 'contact' %}"><i class="fas fa-envelope"></i> Контакты</a></li>
+                    <li><a href="{% url 'about' %}"><i class="fas fa-info-circle"></i> О нас</a></li>
+                    <li><a href="{% url 'links' %}"><i class="fas fa-link"></i> Ресурсы</a></li>
+                    <li><a href="#" id="themeToggle" class="nav-link"><i class="fas fa-moon"></i></a></li>
+
+                    {% if user.is_staff %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle"
+                           href="#"
+                           id="adminDropdown"
+                           role="button"
+                           data-toggle="dropdown"
+                           aria-haspopup="true"
+                           aria-expanded="false">
+                            <i class="fas fa-tools"></i> Панель управления
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="adminDropdown">
+                            <a class="dropdown-item" href="{% url 'newpost' %}">
+                                <i class="fas fa-plus-circle mr-2"></i>Новая статья
+                            </a>
+                            <a class="dropdown-item" href="{% url 'today_tasks' %}">
+                                <i class="fas fa-tasks mr-2"></i>Ежедневник
+                            </a>
+                            <a class="dropdown-item" href="/admin/">
+                                <i class="fas fa-cog mr-2"></i>Администрирвоание
+                            </a>
+                        </div>
+                    </li>
+                    {% endif %}
+                </ul>
+                {% include 'app/loginpartial.html' %}
+            </div>
+
+        </div>
+    </div>
+
+    <div class="container mt-3">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+
+    <div class="container body-content">
+        {% block content %}{% endblock %}
+        <hr />
+        <footer>
+            <p>&copy; {{ year }} - My Django Application</p>
+        </footer>
+    </div>
+
+
+    <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
+    <script src="{% static 'app/scripts/bootstrap.js' %}"></script>
+    <script src="{% static 'app/scripts/respond.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle('dark-theme');
+            const isDark = document.body.classList.contains('dark-theme');
+            localStorage.setItem('darkTheme', isDark);
+
+            const icon = document.querySelector('#themeToggle i');
+            icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
+        }
+
+        // Инициализация темы
+        const savedTheme = localStorage.getItem('darkTheme') === 'true';
+        if (savedTheme) {
+            document.body.classList.add('dark-theme');
+            document.querySelector('#themeToggle i').className = 'fas fa-sun';
+        }
+
+        document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+    </script>
+    <script>
+document.querySelectorAll('.status-btn').forEach(button => {
+  button.addEventListener('click', async e => {
+    e.preventDefault();
+    const taskId = button.dataset.taskId;
+    const url = "{% url 'toggle_task' 0 %}".replace('0', taskId);
+
+    button.classList.add('ajax-loading');
+
+    let data;
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+          'X-CSRFToken': '{{ csrf_token }}',
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      });
+
+      // Всегда парсим JSON
+      data = await response.json();
+
+      if (!response.ok) {
+        // Показываем ошибку пользователю
+        alert(data.error || 'Ошибка при обновлении задачи.');
+        return;
+      }
+
+      // Успех — переключаем UI
+      const isCompleted = data.is_completed;
+      button.classList.toggle('is-completed', isCompleted);
+      button.setAttribute(
+        'aria-label',
+        isCompleted ? 'Вернуть в работу' : 'Отметить выполненным'
+      );
+
+      const icon = button.querySelector('.status-icon');
+      icon.className = `status-icon fas fa-${isCompleted ? 'undo' : 'check-circle'}`;
+
+      const textEl = button.querySelector('.btn-text');
+      if (textEl) textEl.textContent = isCompleted ? 'Вернуть' : 'Готово';
+
+      const card = button.closest('.task-card');
+      if (card) card.classList.toggle('completed', isCompleted);
+
+    } catch (err) {
+      console.error('Network Error:', err);
+      alert('Сетевая ошибка, попробуйте ещё раз.');
+    } finally {
+      button.classList.remove('ajax-loading');
+    }
+  });
+});
+    </script>
+
+
+</body>
+</html>

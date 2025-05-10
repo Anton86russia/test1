@@ -1,0 +1,215 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+
+<!-- Главный герой-блок -->
+<section class="plate-hero">
+    <h1 class="plate-main-title">Изготовление государственных регистрационных знаков</h1>
+    <p class="plate-subtitle">Официальное производство номеров по ГОСТу с гарантией качества</p>
+    <a href="#order" class="plate-main-btn">Заказать сейчас &raquo;</a>
+</section>
+
+<!-- Блок преимуществ -->
+<div class="plate-features-wrapper">
+    <div class="plate-features">
+        <div class="plate-feature-item">
+            <div class="plate-icon">🏭</div>
+            <h3 class="plate-feature-title">Собственное производство</h3>
+            <p class="plate-feature-text">Современное оборудование и полный цикл изготовления</p>
+        </div>
+        
+        <div class="plate-feature-item">
+            <div class="plate-icon">⏱️</div>
+            <h3 class="plate-feature-title">Срочное изготовление</h3>
+            <p class="plate-feature-text">От 15 минут при наличии заготовок</p>
+        </div>
+        
+        <div class="plate-feature-item">
+            <div class="plate-icon">📜</div>
+            <h3 class="plate-feature-title">Полная легальность</h3>
+            <p class="plate-feature-text">Все номера соответствуют ГОСТу Р 50577-2018</p>
+        </div>
+        
+        <div class="plate-feature-item">
+            <div class="plate-icon">💳</div>
+            <h3 class="plate-feature-title">Низкая цена</h3>
+            <p class="plate-feature-text">Прямые производители</p>
+        </div>
+    </div>
+</div>
+
+<!-- Этапы изготовления -->
+<section class="plate-steps-section">
+    <h2 class="plate-section-title">Этапы изготовления</h2>
+    <div class="plate-steps">
+        <div class="plate-step-card">
+            <div class="plate-step-number">1</div>
+            <h4 class="plate-step-title">Оформление заявки</h4>
+            <p class="plate-step-text">Онлайн или лично в офисе</p>
+        </div>
+        
+        <div class="plate-step-card">
+            <div class="plate-step-number">2</div>
+            <h4 class="plate-step-title">Проверка документов</h4>
+            <p class="plate-step-text">Юридическая экспертиза за 10 минут</p>
+        </div>
+        
+        <div class="plate-step-card">
+            <div class="plate-step-number">3</div>
+            <h4 class="plate-step-title">Изготовление номера</h4>
+            <p class="plate-step-text">На автоматизированной линии</p>
+        </div>
+        
+        <div class="plate-step-card">
+            <div class="plate-step-number">4</div>
+            <h4 class="plate-step-title">Получение</h4>
+            <p class="plate-step-text">Самовывоз или доставка</p>
+        </div>
+    </div>
+</section>
+
+<!-- Секция с ценами -->
+<section class="pricing-section" id="cost">
+	<div class="pricing-container">
+		<h2 class="section-title">Стоимость и условия изготовления</h2>
+
+		<div class="pricing-cards">
+			<!-- Физические лица -->
+			<div class="pricing-card physical-card">
+				<div class="card-ribbon">Выгодно!</div>
+				<div class="card-header">
+					<img src="{{ MEDIA_URL }}img/family-car.svg" alt="Физические лица" class="card-icon">
+					<h3>Для частных клиентов</h3>
+				</div>
+
+				<div class="price-block">
+					<div class="price-item">
+						<div class="price-tag">
+							<span class="amount">1500 ₽</span>
+							<span class="label">за 1 номер</span>
+						</div>
+						<div class="price-badge">Стандарт</div>
+					</div>
+
+					<div class="price-item best-price">
+						<div class="price-tag">
+							<span class="amount">2500 ₽</span>
+							<span class="label">полный комплект</span>
+						</div>
+						<div class="price-badge">Стандарт</div>
+					</div>
+				</div>
+
+				<ul class="advantages-list">
+					<li class="advantage-item advantage-delivery">
+						<span>Бесплатная курьерская доставка</span>
+					</li>
+					<li class="advantage-item advantage-calendar">
+						<span>Изготовление за 5 минут</span>
+					</li>
+					<li class="advantage-item advantage-wallet">
+						<span>Наличные или онлайн-оплата</span>
+					</li>
+				</ul>
+
+				<div class="delivery-timeline">
+					<div class="timeline-progress" style="width: 100%"></div>
+					<div class="timeline-labels">
+						<span>Оформление</span>
+						<span>Производство</span>
+						<span>Доставка</span>
+					</div>
+				</div>
+
+				<button class="order-button pulse">
+					Заказать сейчас
+				</button>
+
+			</div>
+
+			<!-- Юридические лица -->
+			<div class="pricing-card business-card">
+				<div class="card-header">
+					<img src="{{ MEDIA_URL }}img/business-buildings.svg" alt="Юридические лица" class="card-icon">
+					<h3>Для организаций</h3>
+				</div>
+
+				<div class="price-block">
+					<div class="price-item">
+						<div class="price-tag">
+							<span class="amount">800 ₽</span>
+							<span class="label">опт от 10 шт.</span>
+						</div>
+						<div class="price-badge">Скидка 46,5%</div>
+					</div>
+				</div>
+
+				<div class="business-features">
+					<div class="feature">
+						<div class="feature-icon">
+							<img src="{{ MEDIA_URL }}img/contract.svg" alt="Договор">
+						</div>
+						<div class="feature-text">
+							<h4>Работаем по договору</h4>
+							<p>Все этапы официально закреплены</p>
+						</div>
+					</div>
+
+					<div class="feature">
+						<div class="feature-icon">
+							<img src="{{ MEDIA_URL }}img/invoice.svg" alt="Счет">
+						</div>
+						<div class="feature-text">
+							<h4>Безналичный расчет</h4>
+							<a href="tel:+79326010164" class="invoice-link">
+								<img src="{{ MEDIA_URL }}img/phone-icon.svg" alt="Телефон">
+								+7-999-900-00-86
+							</a>
+						</div>
+					</div>
+				</div>
+
+				<div class="document-list">
+					<a href="{{ MEDIA_URL }}docs/company_details.pdf" class="document-item" download>
+						<img src="{{ MEDIA_URL }}img/pdf-icon.svg" alt="PDF">
+						<span>Скачать реквизиты</span>
+					</a>
+
+					<a href="{{ MEDIA_URL }}docs/contract_template.docx" class="document-item" download>
+						<img src="{{ MEDIA_URL }}img/doc-icon.svg" alt="DOC">
+						<span>Образец договора</span>
+					</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="additional-info">
+			<div class="info-toggle">
+				<input type="checkbox" id="infoToggle" class="toggle-input">
+				<label for="infoToggle" class="toggle-label">
+					Подробнее о производстве
+					<span class="toggle-arrow"></span>
+				</label>
+				<div class="info-content">
+					<h4>Технология изготовления</h4>
+					<div class="production-steps">
+						<div class="step">
+							<div class="step-number">1</div>
+							<p>Нанесение символов</p>
+						</div>
+						<div class="step">
+							<div class="step-number">2</div>
+							<p>Контроль качества изготовленных номеров по ГОСТ Р 50577-18</p>
+						</div>
+						<div class="step">
+							<div class="step-number">3</div>
+							<p>Документальное сопровождение</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+{% endblock %}

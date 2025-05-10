@@ -1,0 +1,139 @@
+{% extends "app/layout.html" %}
+{% load static %}
+
+{% block content %}
+<div class="task-detail-container">
+    {% if user.is_staff %}  <!-- Проверка прав доступа -->
+    <!-- Заголовок и кнопка возврата -->
+    <div class="detail-header">
+        <h2 class="detail-title">{{ task.title }}</h2>
+        <a href="{% url 'today_tasks' %}" class="btn btn-back">
+            <i class="fas fa-arrow-left"></i> Назад
+        </a>
+    </div>
+
+    <!-- Основная информация -->
+    <div class="task-main-info">
+
+
+        <!-- Описание и метаданные -->
+        <div class="task-meta">
+            <div class="task-description">
+                {{ task.description|linebreaks|default:"<em>Нет описания</em>" }}
+            </div>
+            {% if task.image %}
+            <div class="task-image-wrapper">
+                <img src="{{ task.image.url }}"
+                     alt="Изображение задачи"
+                     class="task-image"
+                     onerror="this.style.display='none'">
+            </div>
+            {% endif %}
+
+            <div class="meta-info">
+                <div class="meta-item">
+                    <i class="fas fa-user"></i>
+                    <span>Автор: {{ task.user.username }}</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-calendar-day"></i>
+                    <span>Дата: {{ task.date|date:"d.m.Y" }}</span>
+                </div>
+                <div class="meta-item tags">
+                    <i class="fas fa-tags"></i>
+                    {% for tag in task.tags.all %}
+                    <span class="tag-badge" style="background-color: {{ tag.color }};">
+                        {{ tag.name }}
+                    </span>
+                    {% empty %}
+                    <span class="text-muted">Нет тегов</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- История изменений (только для суперпользователей) -->
+    {% if user.is_superuser %}
+    <div class="task-history">
+        <h4 class="history-title"><i class="fas fa-history"></i> История изменений</h4>
+
+        {% for history in task.history.all %}
+        <div class="history-item card">
+            <div class="card-body">
+                <div class="history-header">
+                    <span class="history-date">
+                        {{ history.timestamp|date:"d.m.Y H:i" }}
+                    </span>
+                    <span class="history-user badge bg-secondary">
+                        {{ history.user.username|default:"Система" }}
+                    </span>
+                </div>
+
+                {% if history.changes %}
+                <ul class="history-changes">
+                    {% for field, values in history.changes.items %}
+                    <li>
+                        <span class="change-field">{{ field }}:</span>
+                        <span class="change-old">{{ values.old|default:"∅" }}</span>
+                        <i class="fas fa-arrow-right"></i>
+                        <span class="change-new">{{ values.new|default:"∅" }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <div class="no-changes">Изменений не зафиксировано</div>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <div class="alert alert-info">История изменений отсутствует</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% else %}
+    <div class="access-denied">
+        <i class="fas fa-lock"></i>
+        <h3>Доступ запрещён</h3>
+        <p>Просмотр деталей задачи доступен только сотрудникам</p>
+    </div>
+    {% endif %}
+</div>
+{% block extra_scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Обработчик для открытия изображения
+        const images = document.querySelectorAll('.task-image');
+        const modal = document.createElement('div');
+        modal.className = 'modal';
+
+        images.forEach(img => {
+            img.addEventListener('click', function () {
+                const modalImg = document.createElement('img');
+                modalImg.src = this.src;
+                modalImg.className = 'modal-image';
+
+                const closeSpan = document.createElement('span');
+                closeSpan.className = 'close';
+                closeSpan.innerHTML = '&times;';
+
+                modal.innerHTML = '';
+                modal.appendChild(closeSpan);
+                modal.appendChild(modalImg);
+                document.body.appendChild(modal);
+
+                modal.style.display = 'flex';
+            });
+        });
+
+        // Закрытие модального окна
+        modal.onclick = function (e) {
+            if (e.target === modal || e.target.className === 'close') {
+                modal.style.display = 'none';
+            }
+        };
+    });
+</script>
+{% endblock %}
+{% endblock %}
